@@ -32,7 +32,7 @@ class SimpleViewModel : ViewModel() {
     val name: LiveData<String> = _name
     val lastName: LiveData<String> = _lastName
     val likes: LiveData<Int> = _likes // This is to prevent external modification of the variable.
-
+//
     /**
      * Increments the number of likes.
      */
