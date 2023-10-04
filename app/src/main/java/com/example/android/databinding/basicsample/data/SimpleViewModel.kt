@@ -18,7 +18,6 @@ package com.example.android.databinding.basicsample.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 /**
@@ -32,23 +31,25 @@ class SimpleViewModel : ViewModel() {
     val name: LiveData<String> = _name
     val lastName: LiveData<String> = _lastName
     val likes: LiveData<Int> = _likes // This is to prevent external modification of the variable.
-//
+
     /**
      * Increments the number of likes.
      */
-    // popularity is exposed as LiveData using a Transformation instead of a @Bindable property.
-    val popularity: LiveData<Popularity> = Transformations.map(_likes) {
-        when {
-            it > 9 -> Popularity.STAR
-            it > 4 -> Popularity.POPULAR
-            else -> Popularity.NORMAL
-        }
-    }
-
     fun onLike() {
-        _likes.value = (_likes.value ?: 0) + 1
+        likes++
     }
 
+    /**
+     * Returns popularity in buckets: [Popularity.NORMAL], [Popularity.POPULAR] or [Popularity.STAR]
+     */
+    val popularity: Popularity
+        get() {
+            return when {
+                likes > 9 -> Popularity.STAR
+                likes > 4 -> Popularity.POPULAR
+                else -> Popularity.NORMAL
+            }
+        }
 }
 
 enum class Popularity {
